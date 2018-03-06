@@ -1,7 +1,7 @@
 'use strict';
 
 // Simple In-Memory Database (async-callback version)
-const DELAY = 250;
+const DELAY = 1000;
 
 const simDB = {
   
