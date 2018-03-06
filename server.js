@@ -5,13 +5,14 @@ const data = require('./db/notes');
 const simDB = require('./db/simDB');
 const notes = simDB.initialize(data);
 const { PORT } = require('./config');
-
+//const logger = require('./config');
 
 console.log('hello world!');
 // INSERT EXPRESS APP CODE HERE...
 const express = require('express');
 
 const app = express();
+//app.use(logger);
 app.use(express.static('public'));
 app.use(express.json());
 
@@ -28,42 +29,48 @@ app.get('/api/notes/', (req, res, next) => {
     res.json(list);
   });
 
-}); 
-  
-  
-// const query = req.query;
-// const searchQuery = data.filter(function(item) {
-//   if(item.title.includes(query.searchTerm)){
-//     return item;
-//   }else if(item.content.includes(query.searchTerm)){
-//     return item;
-//   } 
-// });
-// if(query.searchTerm === undefined){
-//   res.json(data);
-// } else {
-//   res.json(searchQuery);
-// }
-
-
+});
 
 app.get('/api/notes', (req, res) => {
   res.json(data);
 });
+
 app.get('/api/notes/:id', (req, res, next) =>{
   const { id } = req.params;
-  //res.json(data.find(item => item.id === Number(id)));
-
-  notes.find(1005, (err, item) => {
+  notes.find(id, (err, item) => {
     if (err) {
       return next(err);
     }
     if (item) {
       res.json(item);
     } else {
-      console.log('not found');
+      next();
     }
   });  
+});
+app.put('/api/notes/:id', (req, res, next) => {
+  const id = req.params.id;
+
+  /***** Never trust users - validate input *****/
+  const updateObj = {};
+  const updateFields = ['title', 'content'];
+
+  updateFields.forEach(field => {
+    if (field in req.body) {
+      updateObj[field] = req.body[field];
+    }
+  });
+
+  notes.update(id, updateObj, (err, item) => {
+    if (err) {
+      return next(err);
+    }
+    if (item) {
+      res.json(item);
+    } else {
+      next();
+    }
+  });
 });
 app.use(function (req, res, next) {
   var err = new Error('Not Found');

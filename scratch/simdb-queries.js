@@ -25,18 +25,18 @@ const notes = simDB.initialize(data);
 // });
 
 // PUT (Update) Notes by ID
-const updateObj = {
-  title: 'New Title',
-  content: 'Blah blah blah'
-};
+// const updateObj = {
+//   title: 'New Title',
+//   content: 'Blah blah blah'
+// };
 
-notes.update(1005, updateObj, (err, item) => {
-  if (err) {
-    console.error(err);
-  }
-  if (item) {
-    console.log(item);
-  } else {
-    console.log('not found');
-  }
-});
+// notes.update(1005, updateObj, (err, item) => {
+//   if (err) {
+//     console.error(err);
+//   }
+//   if (item) {
+//     console.log(item);
+//   } else {
+//     console.log('not found');
+//   }
+// });
