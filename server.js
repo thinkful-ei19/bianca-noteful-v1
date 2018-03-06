@@ -20,12 +20,17 @@ app.get('/api/notes/', (req, res) => {
   const searchQuery = data.filter(function(item) {
     if(item.title.includes(query.searchTerm)){
       return item;
-    }else if (item.content.includes(query.searchTerm)){
+    }else if(item.content.includes(query.searchTerm)){
       return item;
-    }
+    } 
   });
-  res.json(searchQuery);
+  if(query.searchTerm === undefined){
+    res.json(data);
+  } else {
+    res.json(searchQuery);
+  }
 });
+
 
 app.get('/api/notes', (req, res) => {
   res.json(data);
